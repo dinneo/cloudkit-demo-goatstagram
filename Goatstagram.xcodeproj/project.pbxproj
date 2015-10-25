@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6D850F221BDC614400A161EB /* UserSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D850F211BDC614400A161EB /* UserSettingsViewController.swift */; };
+		6D850F241BDC622F00A161EB /* UIControl+LayerCustoms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D850F231BDC622F00A161EB /* UIControl+LayerCustoms.swift */; };
+		6D850F261BDC63F100A161EB /* UsersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D850F251BDC63F100A161EB /* UsersService.swift */; };
+		6D850F2A1BDC647200A161EB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D850F291BDC647200A161EB /* User.swift */; };
+		6D850F301BDC77BF00A161EB /* FileCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D850F2F1BDC77BF00A161EB /* FileCacheService.swift */; };
+		6D850F331BDC7E6000A161EB /* ThumbnailPickerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D850F321BDC7E6000A161EB /* ThumbnailPickerService.swift */; };
 		6DBCD9781BDB77E100D01613 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBCD9771BDB77E100D01613 /* AppDelegate.swift */; };
 		6DBCD97A1BDB77E100D01613 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBCD9791BDB77E100D01613 /* ViewController.swift */; };
 		6DBCD97D1BDB77E100D01613 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DBCD97B1BDB77E100D01613 /* Main.storyboard */; };
@@ -16,6 +22,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6D850F211BDC614400A161EB /* UserSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSettingsViewController.swift; sourceTree = "<group>"; };
+		6D850F231BDC622F00A161EB /* UIControl+LayerCustoms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+LayerCustoms.swift"; sourceTree = "<group>"; };
+		6D850F251BDC63F100A161EB /* UsersService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersService.swift; sourceTree = "<group>"; };
+		6D850F291BDC647200A161EB /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		6D850F2F1BDC77BF00A161EB /* FileCacheService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileCacheService.swift; sourceTree = "<group>"; };
+		6D850F321BDC7E6000A161EB /* ThumbnailPickerService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailPickerService.swift; sourceTree = "<group>"; };
 		6DBCD9741BDB77E100D01613 /* Goatstagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Goatstagram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DBCD9771BDB77E100D01613 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6DBCD9791BDB77E100D01613 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -39,6 +51,48 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6D850F271BDC645000A161EB /* CloudKit Services */ = {
+			isa = PBXGroup;
+			children = (
+				6D850F251BDC63F100A161EB /* UsersService.swift */,
+			);
+			name = "CloudKit Services";
+			sourceTree = "<group>";
+		};
+		6D850F281BDC645800A161EB /* Local Model */ = {
+			isa = PBXGroup;
+			children = (
+				6D850F291BDC647200A161EB /* User.swift */,
+			);
+			name = "Local Model";
+			sourceTree = "<group>";
+		};
+		6D850F2B1BDC671100A161EB /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				6DBCD9791BDB77E100D01613 /* ViewController.swift */,
+				6D850F211BDC614400A161EB /* UserSettingsViewController.swift */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		6D850F2D1BDC672800A161EB /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				6D850F231BDC622F00A161EB /* UIControl+LayerCustoms.swift */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		6D850F311BDC7E2F00A161EB /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				6D850F2F1BDC77BF00A161EB /* FileCacheService.swift */,
+				6D850F321BDC7E6000A161EB /* ThumbnailPickerService.swift */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
 		6DBCD96B1BDB77E100D01613 = {
 			isa = PBXGroup;
 			children = (
@@ -59,9 +113,13 @@
 		6DBCD9761BDB77E100D01613 /* Goatstagram */ = {
 			isa = PBXGroup;
 			children = (
-				6DBCD9891BDB785800D01613 /* Goatstagram.entitlements */,
 				6DBCD9771BDB77E100D01613 /* AppDelegate.swift */,
-				6DBCD9791BDB77E100D01613 /* ViewController.swift */,
+				6D850F2D1BDC672800A161EB /* Categories */,
+				6D850F271BDC645000A161EB /* CloudKit Services */,
+				6D850F281BDC645800A161EB /* Local Model */,
+				6D850F311BDC7E2F00A161EB /* Services */,
+				6D850F2B1BDC671100A161EB /* View Controllers */,
+				6DBCD9891BDB785800D01613 /* Goatstagram.entitlements */,
 				6DBCD97B1BDB77E100D01613 /* Main.storyboard */,
 				6DBCD97E1BDB77E100D01613 /* Assets.xcassets */,
 				6DBCD9801BDB77E100D01613 /* LaunchScreen.storyboard */,
@@ -147,7 +205,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D850F241BDC622F00A161EB /* UIControl+LayerCustoms.swift in Sources */,
+				6D850F261BDC63F100A161EB /* UsersService.swift in Sources */,
+				6D850F331BDC7E6000A161EB /* ThumbnailPickerService.swift in Sources */,
+				6D850F301BDC77BF00A161EB /* FileCacheService.swift in Sources */,
+				6D850F2A1BDC647200A161EB /* User.swift in Sources */,
 				6DBCD97A1BDB77E100D01613 /* ViewController.swift in Sources */,
+				6D850F221BDC614400A161EB /* UserSettingsViewController.swift in Sources */,
 				6DBCD9781BDB77E100D01613 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -304,6 +368,7 @@
 				6DBCD9881BDB77E100D01613 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
