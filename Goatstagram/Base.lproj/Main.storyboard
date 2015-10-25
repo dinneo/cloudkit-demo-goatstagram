@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="fhA-UW-qeF">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Main View Controller-->
+        <!--Recent Goats-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="MainViewController" customModule="Goatstagram" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="PublicFeedViewController" customModule="Goatstagram" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -30,7 +30,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PhotoCollectionViewCell" id="1EH-XQ-KwY" customClass="PhotoCollectionViewCell" customModule="Goatstagram" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="291" height="257"/>
+                                        <rect key="frame" x="0.0" y="64" width="291" height="257"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="291" height="257"/>
@@ -61,49 +61,39 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="rPG-Tp-KUX"/>
                                 </connections>
                             </collectionView>
-                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dUR-rl-EnV">
-                                <rect key="frame" x="504" y="30" width="76" height="32"/>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="aUc-0H-8rg">
+                                <rect key="frame" x="282" y="281" width="37" height="37"/>
                                 <animations/>
-                                <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
-                                <inset key="contentEdgeInsets" minX="20" minY="5" maxX="20" maxY="5"/>
-                                <state key="normal" title="Post">
-                                    <color key="titleColor" red="0.36194274479999999" green="0.25882352939999997" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="6"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                        <integer key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="layer.borderUIColor">
-                                        <color key="value" red="0.36194274479999999" green="0.25882352939999997" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="selectAndPostPhoto:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SDZ-Mk-ypx"/>
-                                </connections>
-                            </button>
+                                <color key="color" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="vyF-o1-5Dc" firstAttribute="bottom" secondItem="8bC-Xf-vdC" secondAttribute="bottom" id="4S7-ez-1kW"/>
                             <constraint firstItem="vyF-o1-5Dc" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="EdD-gr-EGZ"/>
-                            <constraint firstItem="dUR-rl-EnV" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="30" id="S3E-hz-94q"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="vyF-o1-5Dc" secondAttribute="bottom" id="Ud4-j1-xF3"/>
+                            <constraint firstItem="aUc-0H-8rg" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="F4B-iA-2Qm"/>
+                            <constraint firstItem="aUc-0H-8rg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="LCu-43-tmd"/>
                             <constraint firstItem="vyF-o1-5Dc" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="bgh-ml-ur4"/>
                             <constraint firstAttribute="trailing" secondItem="vyF-o1-5Dc" secondAttribute="trailing" id="h0e-4a-puC"/>
-                            <constraint firstAttribute="trailing" secondItem="dUR-rl-EnV" secondAttribute="trailing" constant="20" id="qUS-Ik-BQe"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Recent Goats" id="fGZ-wl-Reg">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Qgv-yh-ze2">
+                            <connections>
+                                <action selector="selectAndPostPhoto:" destination="BYZ-38-t0r" id="FA2-AD-yhb"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="aUc-0H-8rg" id="69v-iS-F3P"/>
                         <outlet property="collectionView" destination="vyF-o1-5Dc" id="mxs-Zx-Ler"/>
-                        <outlet property="postButton" destination="dUR-rl-EnV" id="gNk-UV-hdn"/>
+                        <outlet property="postButton" destination="Qgv-yh-ze2" id="rbI-hc-hK1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="470" y="329"/>
+            <point key="canvasLocation" x="2094" y="329"/>
         </scene>
         <!--Me-->
         <scene sceneID="9vj-Hf-8bI">
@@ -173,7 +163,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Yd-Dk-0Ok" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2038" y="391"/>
+            <point key="canvasLocation" x="3662" y="391"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="SuT-VP-CEw">
@@ -192,7 +182,47 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uhq-HY-mkr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1226" y="391"/>
+            <point key="canvasLocation" x="2850" y="391"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="cPz-KR-Zgk">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mKR-vS-ywW" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" systemItem="recents" id="Ibf-9p-p4W"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ffE-or-Ci4">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="vgP-pD-W0l"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="b7u-jr-nbQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1282" y="329"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="UWP-4I-BjS">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="fhA-UW-qeF" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="7mZ-ej-zak">
+                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="mKR-vS-ywW" kind="relationship" relationship="viewControllers" id="PZe-3v-2h3"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FU5-tm-waq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="470" y="329"/>
         </scene>
     </scenes>
 </document>

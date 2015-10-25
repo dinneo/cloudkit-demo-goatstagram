@@ -9,7 +9,7 @@
 import UIKit
 import CloudKit
 
-class PhotoService {
+class PhotosService {
     class func postPhoto(image: UIImage, userRecordID: CKRecordID, completion: (success: Bool) -> Void) {
         let assetURL = FileCacheService.saveData(UIImagePNGRepresentation(image)!, identifier: userRecordID.recordName)
         let photoRecord = CKRecord(recordType: "Photos")
@@ -29,26 +29,68 @@ class PhotoService {
         }
     }
     
-    class func fetchLatestPhotos(completion: [Photo] -> Void) {
+    class func fetchRecents(number: Int, perPhotoCompletion: Photo -> Void, completion: (photos: [Photo], success: Bool) -> Void) {
+        print("fetching recents...")
         var photos = [Photo]()
         
-        let predicate = NSPredicate(value: true)
-        let query = CKQuery(recordType: "Photos", predicate: predicate)
+        let query = CKQuery(recordType: "Photos", predicate: NSPredicate(value: true))
+        query.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         
         let queryOperation = CKQueryOperation(query: query)
-        queryOperation.resultsLimit = 10;
+        queryOperation.resultsLimit = number;
+        
         queryOperation.queryCompletionBlock = { (cursor, error) in
+            print("fetching recents completed.")
             if error != nil {
                 print(error)
             }
             
-            completion(photos)
+            dispatch_async(dispatch_get_main_queue(), {
+                completion(photos: photos, success: error == nil)
+            })
         }
         
         queryOperation.recordFetchedBlock = { record in
-            photos.append(Photo(record: record))
+            print("photo downloaded")
+            let photo = Photo(record: record)
+            photos.append(photo)
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                perPhotoCompletion(photo)
+            })
         }
         
         CKContainer.defaultContainer().publicCloudDatabase.addOperation(queryOperation)
+    }
+    
+    class func subscribeForChangesInRecents(completion: (subscriptionID: String?) -> Void) {
+        CKContainer.defaultContainer().publicCloudDatabase.fetchAllSubscriptionsWithCompletionHandler { (subscriptions, error) -> Void in
+            guard error == nil else {
+                print(error)
+                completion(subscriptionID: nil)
+                return
+            }
+            
+            /// Check if subscription exists
+            for subscription in subscriptions! {
+                if subscription.recordType == "Photos" && subscription.subscriptionOptions == [.FiresOnRecordCreation] {
+                    print("subscription exists")
+                    completion(subscriptionID: subscription.subscriptionID)
+                    return
+                }
+            }
+            
+            /// Create new subscription
+            let subscription = CKSubscription(recordType: "Photos", predicate: NSPredicate(value: true), options: [.FiresOnRecordCreation])
+            
+            CKContainer.defaultContainer().publicCloudDatabase.saveSubscription(subscription) { (savedSubscription, error) -> Void in
+                if error != nil {
+                    print(error)
+                }
+                
+                print("subscribed for new photos")
+                completion(subscriptionID: savedSubscription?.subscriptionID)
+            }
+        }
     }
 }
