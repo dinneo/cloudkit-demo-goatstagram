@@ -14,7 +14,7 @@ class UserSettingsViewController: UIViewController {
     @IBOutlet private var thumbnailButton: UIButton!
     @IBOutlet private var nameTextField: UITextField!
     
-    private var thumbnailPicker = ThumbnailPickerService()
+    private var thumbnailPicker = AssetPickerService()
     
     var user: User!
     

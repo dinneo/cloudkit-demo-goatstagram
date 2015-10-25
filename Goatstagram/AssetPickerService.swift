@@ -1,5 +1,5 @@
 //
-//  ThumbnailPickerService.swift
+//  AssetPickerService.swift
 //  Goatstagram
 //
 //  Created by Tomasz Szulc on 24/10/15.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ThumbnailPickerService: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class AssetPickerService: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     typealias Completion = (image: UIImage?) -> Void
     
     private var picker: UIImagePickerController?
