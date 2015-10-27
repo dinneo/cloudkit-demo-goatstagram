@@ -21,44 +21,88 @@ UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
     private var assetPicker = AssetPickerService()
     private var subscriptionID: String?
     private var goatSound: SystemSoundID = 0
+    private var userRecordID: CKRecordID?
+    private var operationQueue = NSOperationQueue()
+    
+    private enum SegueIdentifier: String {
+        case ShowPhoto
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchRecents()
-        observeRecents()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        updatePostButton()
+        configureView()
     }
     
-    private func updatePostButton() {
-        CKContainer.defaultContainer().accountStatusWithCompletionHandler { (status, error) -> Void in
-            if (status != .Available) {
-                self.postButton.enabled = false
-                let alert = UIAlertController(title: "You're not logged in", message: "Please go to iCloud settings and log in with your credentials to add photos.", preferredStyle: .Alert)
-                alert.addAction(UIAlertAction(title: "Close", style: .Default, handler: nil))
+    private func configureView() {
+        AccountService.accountStatus { available in
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.postButton.enabled = available
                 
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.presentViewController(alert, animated: true, completion: nil)
-                })
-            } else {
-                self.postButton.enabled = true
-            }
-        }
-    }
+                /// Show alert with error
+                if available == true {
+                    /// Create operation to fetch CKRecordID of a user
+                    let fetchingUserRecordOperation = NSBlockOperation() {
+                        print("fetching user record operation")
+                        let semaphore = dispatch_semaphore_create(0)
+                        AccountService.fetchUserRecordID { userRecordID in
+                            self.userRecordID = userRecordID
+                            dispatch_semaphore_signal(semaphore)
+                        }
+                        
+                        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+                    }
+                    
+                    /// Create operation of fetching recent posts
+                    let fetchingRecentsOperation = NSBlockOperation() {
+                        print("fetching recents operation")
+                        let semaphore = dispatch_semaphore_create(0)
+                        PhotosService.fetchRecents(8, perPhotoCompletion: { (photo) -> Void in
+                                self.photos.append(photo)
+                                self.collectionView.reloadData()
+                            }) { (photos, success) -> Void in
+                                self.photos = photos
+                                self.collectionView.reloadData()
+                                self.playGoatSound()
+                                self.activityIndicator.stopAnimating()
+                                dispatch_semaphore_signal(semaphore)
+                        }
 
-    private func fetchRecents() {
-        activityIndicator.startAnimating()
-        PhotosService.fetchRecents(8, perPhotoCompletion: { (photo) -> Void in
-                self.photos.append(photo)
-                self.collectionView.reloadData()
-            }) { (photos, success) -> Void in
-                self.photos = photos
-                self.collectionView.reloadData()
-                self.playGoatSound()
-                self.activityIndicator.stopAnimating()
+                        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+                    }
+                    
+                    let observingChangesOperation = NSBlockOperation() {
+                        print("observing changes operation")
+                        let semaphore = dispatch_semaphore_create(0)
+                        PhotosService.subscribeForChangesInRecents { (subscriptionID) -> Void in
+                            self.subscriptionID = subscriptionID
+                            print("success subscribing recents: \(subscriptionID)")
+                            NSNotificationCenter.defaultCenter().addObserver(self, selector: "subscriptionNotificationReceived:", name: SubscriptionNotification, object: nil)
+                            dispatch_semaphore_signal(semaphore)
+                        }
+                        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+                    }
+                    
+                    /// configure queue
+                    self.operationQueue = NSOperationQueue()
+                    self.operationQueue.name = "PublicFeed.configure"
+                    self.operationQueue.maxConcurrentOperationCount = 2
+                    
+                    /// add operations with dependencies
+                    observingChangesOperation.addDependency(fetchingRecentsOperation)
+                    fetchingRecentsOperation.addDependency(fetchingUserRecordOperation)
+                    self.operationQueue.addOperations([fetchingUserRecordOperation, fetchingRecentsOperation, observingChangesOperation], waitUntilFinished: false)
+                    
+                } else {
+                    self.postButton.enabled = false
+                    let alert = UIAlertController(title: "You're not logged in", message: "Please go to iCloud settings and log in with your credentials to add photos.", preferredStyle: .Alert)
+                    alert.addAction(UIAlertAction(title: "Close", style: .Default, handler: nil))
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
+            })
         }
     }
     
@@ -70,18 +114,53 @@ UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
         AudioServicesPlaySystemSound(goatSound);
     }
     
-    private func observeRecents() {
-        PhotosService.subscribeForChangesInRecents { (subscriptionID) -> Void in
-            self.subscriptionID = subscriptionID
-            print("success subscribing recents: \(subscriptionID)")
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "subscriptionNotificationReceived:", name: SubscriptionNotification, object: nil)
-        }
-    }
-    
     func subscriptionNotificationReceived(notification: NSNotification) {
         print("received notification - new item in feed")
         if notification.userInfo!["subscriptionID"] as? String == subscriptionID {
-            fetchRecents()
+            fetchRecents(1)
+        }
+    }
+    
+    func fetchRecents(number: Int) {
+        PhotosService.fetchRecents(number, perPhotoCompletion: { (photo) -> Void in
+            // do nothing
+            }, completion: { (photos, success) -> Void in
+                if success {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.insertPhoto(photos.first!)
+                    })
+                }
+        })
+    }
+    
+    func insertPhoto(photo: Photo) {
+        self.photos.insert(photo, atIndex: 0)
+        self.collectionView.reloadData()
+        self.playGoatSound()
+    }
+    
+    @IBAction func selectAndPostPhoto() {
+        assetPicker.presentInViewController(self) { image in
+            if image != nil {
+                PhotosService.postPhoto(image!, userRecordID: self.userRecordID!, completion: { (savedRecord) -> Void in
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        if savedRecord != nil {
+                            self.insertPhoto(Photo(record: savedRecord!))
+                        }
+
+                        var alert: UIAlertController!
+                        if savedRecord != nil {
+                            alert = UIAlertController(title: "Success", message: "Photo posted", preferredStyle: .Alert)
+                        } else {
+                            alert = UIAlertController(title: "Failure", message: "Photo not posted. Try again.", preferredStyle: .Alert)
+                        }
+                        
+                        alert.addAction(UIAlertAction(title: "Close", style: .Default, handler: nil))
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    })
+                })
+            }
         }
     }
     

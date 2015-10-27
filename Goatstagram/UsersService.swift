@@ -9,52 +9,28 @@
 import Foundation
 import CloudKit
 
-class UsersService {
-    class func fetchICloudUser(completion: (user: User?) -> Void) {
-        let database = CKContainer.defaultContainer()
-        database.fetchUserRecordIDWithCompletionHandler { (userRecordID, error) -> Void in
+class AccountService {
+    class func accountStatus(completion: (available: Bool) -> Void) {
+        CKContainer.defaultContainer().accountStatusWithCompletionHandler { (status, error) -> Void in
+            print("account status = \(status.rawValue)")
             guard error == nil else {
-                print(error)
-                completion(user: nil)
+                print("UserService err: \(error)")
+                completion(available: false)
                 return
             }
-            
-            database.publicCloudDatabase.fetchRecordWithID(userRecordID!, completionHandler: { (userRecord, error) -> Void in
-                guard error == nil else {
-                    print(error)
-                    completion(user: nil)
-                    return;
-                }
-                
-                print(userRecord!)
-                completion(user: User(record: userRecord!))
-            })
+            completion(available: true)
         }
     }
     
-    class func saveUser(user: User, completion: (success: Bool) -> Void) {
+    class func fetchUserRecordID(completion: CKRecordID? -> Void) {
         let database = CKContainer.defaultContainer()
-        database.publicCloudDatabase.fetchRecordWithID(user.recordID) { (fetchedRecord, error) -> Void in
+        database.fetchUserRecordIDWithCompletionHandler { (fetchedRecordID, error) -> Void in
             guard error == nil else {
-                print(error)
-                completion(success: false)
+                print("AccountService error: \(error)")
+                completion(nil)
                 return
             }
-            
-            fetchedRecord!["name"] = user.name
-            fetchedRecord!["thumbnail"] = user.thumbnail
-            
-            database.publicCloudDatabase.saveRecord(fetchedRecord!) { (savedRecord, error) -> Void in
-                guard error == nil else {
-                    print(error)
-                    completion(success: false)
-                    return
-                }
-                
-                print("User saved: \(savedRecord!)")
-                completion(success: true)
-            }
-
+            completion(fetchedRecordID)
         }
     }
 }

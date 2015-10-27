@@ -10,7 +10,7 @@ import UIKit
 import CloudKit
 
 class PhotosService {
-    class func postPhoto(image: UIImage, userRecordID: CKRecordID, completion: (success: Bool) -> Void) {
+    class func postPhoto(image: UIImage, userRecordID: CKRecordID, completion: (savedRecord: CKRecord?) -> Void) {
         let assetURL = FileCacheService.saveData(UIImagePNGRepresentation(image)!, identifier: userRecordID.recordName)
         let photoRecord = CKRecord(recordType: "Photos")
         photoRecord["asset"] = CKAsset(fileURL: assetURL)
@@ -19,13 +19,13 @@ class PhotosService {
         let database = CKContainer.defaultContainer().publicCloudDatabase
         database.saveRecord(photoRecord) { (savedRecord, error) -> Void in
             guard error == nil else {
-                print(error)
-                completion(success: false)
+                print("PhotoService error: \(error)")
+                completion(savedRecord: nil)
                 return
             }
             
             print(savedRecord)
-            completion(success: true)
+            completion(savedRecord: savedRecord)
         }
     }
     
@@ -42,7 +42,7 @@ class PhotosService {
         queryOperation.queryCompletionBlock = { (cursor, error) in
             print("fetching recents completed.")
             if error != nil {
-                print(error)
+                print("PhotoService error: \(error)")
             }
             
             dispatch_async(dispatch_get_main_queue(), {
@@ -66,7 +66,7 @@ class PhotosService {
     class func subscribeForChangesInRecents(completion: (subscriptionID: String?) -> Void) {
         CKContainer.defaultContainer().publicCloudDatabase.fetchAllSubscriptionsWithCompletionHandler { (subscriptions, error) -> Void in
             guard error == nil else {
-                print(error)
+                print("PhotoService error: \(error)")
                 completion(subscriptionID: nil)
                 return
             }
@@ -85,7 +85,7 @@ class PhotosService {
             
             CKContainer.defaultContainer().publicCloudDatabase.saveSubscription(subscription) { (savedSubscription, error) -> Void in
                 if error != nil {
-                    print(error)
+                    print("PhotoService error: \(error)")
                 }
                 
                 print("subscribed for new photos")

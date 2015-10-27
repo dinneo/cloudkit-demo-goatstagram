@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Recent Goats-->
@@ -81,7 +80,7 @@
                     <navigationItem key="navigationItem" title="Recent Goats" id="fGZ-wl-Reg">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Qgv-yh-ze2">
                             <connections>
-                                <action selector="selectAndPostPhoto:" destination="BYZ-38-t0r" id="FA2-AD-yhb"/>
+                                <action selector="selectAndPostPhoto" destination="BYZ-38-t0r" id="UhZ-zj-Zeu"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -94,95 +93,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2094" y="329"/>
-        </scene>
-        <!--Me-->
-        <scene sceneID="9vj-Hf-8bI">
-            <objects>
-                <viewController id="Luh-1o-2VB" customClass="UserSettingsViewController" customModule="Goatstagram" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="U09-Z8-wzm"/>
-                        <viewControllerLayoutGuide type="bottom" id="ZeB-Zz-2bF"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="C0p-n8-Ec3">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name (e.g. Mathilda)" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="z2t-Yl-9dr">
-                                <rect key="frame" x="20" y="254" width="560" height="30"/>
-                                <animations/>
-                                <color key="textColor" red="0.36194274479999999" green="0.25882352939999997" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no"/>
-                            </textField>
-                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rB0-49-F0g">
-                                <rect key="frame" x="240" y="104" width="120" height="120"/>
-                                <animations/>
-                                <color key="backgroundColor" red="0.85490196080000003" green="0.85490196080000003" blue="0.85490196080000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="rB0-49-F0g" secondAttribute="height" multiplier="1:1" id="Hzr-bh-Cwm"/>
-                                    <constraint firstAttribute="height" constant="120" id="a5s-Nw-d40"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="60"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="thumbnailPressed:" destination="Luh-1o-2VB" eventType="touchUpInside" id="g1z-wx-F8l"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="z2t-Yl-9dr" secondAttribute="trailing" constant="20" id="4Gj-ja-W6w"/>
-                            <constraint firstItem="z2t-Yl-9dr" firstAttribute="top" secondItem="rB0-49-F0g" secondAttribute="bottom" constant="30" id="4pa-l0-U8L"/>
-                            <constraint firstItem="rB0-49-F0g" firstAttribute="centerX" secondItem="C0p-n8-Ec3" secondAttribute="centerX" id="62y-r5-5Og"/>
-                            <constraint firstItem="z2t-Yl-9dr" firstAttribute="leading" secondItem="C0p-n8-Ec3" secondAttribute="leading" constant="20" id="AWs-Yd-RIH"/>
-                            <constraint firstItem="rB0-49-F0g" firstAttribute="top" secondItem="U09-Z8-wzm" secondAttribute="bottom" constant="40" id="JHF-lN-wr5"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Me" id="hGx-X8-sLf">
-                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="iiu-sT-6s0">
-                            <color key="tintColor" red="0.36194274479999999" green="0.25882352939999997" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <action selector="cancelPressed:" destination="Luh-1o-2VB" id="iAP-1S-CuM"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="CHl-k2-IbP">
-                            <color key="tintColor" red="0.36194274479999999" green="0.25882352939999997" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <action selector="savePressed:" destination="Luh-1o-2VB" id="55k-8m-lCe"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="nameTextField" destination="z2t-Yl-9dr" id="fdg-6c-wwG"/>
-                        <outlet property="thumbnailButton" destination="rB0-49-F0g" id="QLn-qh-bL3"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4Yd-Dk-0Ok" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3662" y="391"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="SuT-VP-CEw">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="B1b-E9-Ixe" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xzQ-lV-YXU">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <animations/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="Luh-1o-2VB" kind="relationship" relationship="rootViewController" id="0w2-kO-9kV"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Uhq-HY-mkr" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2850" y="391"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="cPz-KR-Zgk">
